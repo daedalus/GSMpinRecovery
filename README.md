@@ -1,10 +1,10 @@
-# SC_Pin_recovery
-Smart card pin recovery
+# GSMpinRecovery
+GSM pin recovery
 
 ```
-usage: SC_Pin_Recovery.py [-h] [--startpin STARTPIN] [--lenght LENGHT] [--wait WAIT] [--reset RESET]
+usage: GSMpinRecovery.py [-h] [--startpin STARTPIN] [--lenght LENGHT] [--wait WAIT] [--reset RESET]
 
-SmartCard Pin recovery tool
+GSM Pin recovery tool
 
 optional arguments:
   -h, --help           show this help message and exit
@@ -16,5 +16,5 @@ optional arguments:
 
 Conect your card reader and insert a simm card then fire it:
 ```
-python3 SIMM_Pin_Recovery.py --startpin 0 --lenght 7
+python3 GSMpinRecovery.py --startpin 0 --lenght 7
 ```
