@@ -14,7 +14,7 @@ optional arguments:
   --reset RESET        Reset the chip after try
 ```
 
-Conect your card reader and insert a simm card then fire it:
+Conect your card reader and insert a gsm sim card then fire it:
 ```
 python3 GSMpinRecovery.py --startpin 0 --lenght 7
 ```
