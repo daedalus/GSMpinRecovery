@@ -155,7 +155,7 @@ class Attack():
         self.Continue = False
 
 if __name__ == "__main__":
-  parser = argparse.ArgumentParser(description="SIMM Pin recovery tool")
+  parser = argparse.ArgumentParser(description="GSM Pin recovery tool")
   parser.add_argument("--startpin", help="Pin to be cracked.")
   parser.add_argument("--lenght", help="Lenght of the Pin to be cracked.", default=4)
   parser.add_argument("--wait", help="Wait in seconds")
