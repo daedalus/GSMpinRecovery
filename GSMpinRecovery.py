@@ -12,7 +12,9 @@ import base64
 import os
 
 from smartcard.System import readers
-
+from smartcard.CardType import AnyCardType
+from smartcard.CardRequest import CardRequest
+from smartcard.util import toHexString, toBytes
 
 class Attack:
     def __init__(
@@ -231,10 +233,27 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    r = readers()
-    print("[+] Reader:", r)
-    connection = r[0].createConnection()
-    connection.connect()
+    def getConnection():
+        r = readers()
+        print("[+] Reader:", r)
+        cardtype = AnyCardType()
+        cardrequest = CardRequest( timeout=60, cardType=cardtype )
+        print("[!] Waiting for card...")
+        try:
+            cardservice = cardrequest.waitforcard()
+        except:
+            cardservice = None
+            connection = None
+        if cardservice:
+            print("[+] Card ATR is: [ %s ]" % toHexString(cardservice.connection.getATR()))
+            connection = r[0].createConnection()
+            connection.connect()
+        return connection
+
+    connection = getConnection()
+
+    if connection == None:
+        sys.exit(-1)
 
     if args.startpin:
         # n= 00274710
