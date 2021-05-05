@@ -170,10 +170,9 @@ class Attack:
             r = self.xmit(COMM)
             if r != None:
                 data, sw1, sw2 = r
-                scommand = str(list(map(hex, COMM)))
-
                 if not self.stoping:
                     if self.verbose:
+                        scommand = str(list(map(hex, COMM)))
                         sys.stderr.write(
                             "Pin: %d, Command: %s, Status: %02x %02x\r"
                             % (n, scommand, sw1, sw2)
