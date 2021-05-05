@@ -59,7 +59,8 @@ class Attack:
             subject,
             sender,
         )
-        print(cmd)
+        if self.verbose:
+            print(cmd)
         os.system(cmd)
 
     def runtime(self):
@@ -67,7 +68,8 @@ class Attack:
         nd = self.nc - self.ns
         ndtd = nd / td
         htd = humanfriendly.format_timespan(td)
-        print("[+] Runtime: %s, tried pins: %d, rate: %.4f pin/s.   " % (htd, nd, ndtd))
+        r = "[+] Runtime: %s, tried pins: %d, rate: %.4f pin/s.   " % (htd, nd, ndtd)
+        return r
 
     def signal_handler(self, sig, frame):
         self.stoping = True
@@ -188,8 +190,6 @@ class Attack:
 
                 if sw2 == 0x40:  # status for card blocked
                     print("[!] Card blocked, check PUK!...")
-                    # self.runtime()
-                    # sys.exit(-1)
                     self.stoping = True
                     self.Found = False
             else:
@@ -198,10 +198,10 @@ class Attack:
                 self.Found = False
 
             if self.Found:  # Status for successful attack
-                print("\n\n[*] The PIN is: [ %d ]!!!" % n)
+                b = "The PIN is: [ %d ]!!!\n%s\n" % (n,self.runtime())
+                print(b)
                 self.stoping = True
                 if self.rcpt:
-                    b = "The PIN is: [ %d ]!!!" % n
                     self.sendmail(b, self.rcpt, "Check this!!!", self.sender)
 
             if self.wait != None:
@@ -218,7 +218,8 @@ class Attack:
                 self.save()
 
             if self.stoping == True:
-                self.runtime()  # prints runtime information
+                if not self.Found:
+                    print(self.runtime())  # prints runtime information
                 self.Continue = False
 
 
