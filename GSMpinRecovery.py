@@ -26,7 +26,16 @@ class Attack():
     self.connection = connection
     self.rcpt = rcpt
     self.sender = sender
-
+    self.fp = None
+    
+  def save(self):
+    n = self.nc
+    if self.fp == None:
+      self.fp = open(".GSMpinRecovery.save","w")
+      self.fp.write("%d\n" % self.nc)
+      self.fp.close()
+      self.fp = None
+      
   def sendmail(self, body, recipient, subject, sender):
     b64 = base64.b64encode(body.encode('ascii')).decode('ascii')
     cmd = "echo %s | base64 -d | gpg -ea -r '%s' | mail %s -s '%s' -r '%s'" % (b64,recipient,recipient,subject, sender)
@@ -131,6 +140,9 @@ class Attack():
         self.ResetChip()
 
       n += 1
+      
+      if n % 10000 == 0:
+        self.save()
 
       if self.stoping == True:
         self.runtime() # prints runtime information
