@@ -1,7 +1,7 @@
 # GSMpinRecovery
 GSM pin recovery
 
-WARNING: This tool may block your GSM SIM card and if you dont have your PUK anotated you will not be able to unblock it.
+__WARNING__: _This tool may block your GSM SIM card and if you dont have your PUK annotated you will not be able to unblock it._
 
 
 ```
