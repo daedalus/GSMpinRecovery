@@ -245,14 +245,15 @@ if __name__ == "__main__":
             cardservice = None
             connection = None
         if cardservice:
-            print("[+] Card ATR is: [ %s ]" % toHexString(cardservice.connection.getATR()))
             connection = r[0].createConnection()
             connection.connect()
+            print("[+] Card ATR is: [ %s ]" % toHexString(connection.getATR()))
         return connection
 
     connection = getConnection()
 
     if connection == None:
+        print("[!] Could not get connection to the card, check your reader...")
         sys.exit(-1)
 
     if args.startpin:
