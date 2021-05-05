@@ -67,7 +67,7 @@ class Attack:
         nd = self.nc - self.ns
         ndtd = nd / td
         htd = humanfriendly.format_timespan(td)
-        print("[+] Runtime: %s, tried pins: %d, rate: %.4f    " % (htd, nd, ndtd))
+        print("[+] Runtime: %s, tried pins: %d, rate: %.4f pin/s.   " % (htd, nd, ndtd))
 
     def signal_handler(self, sig, frame):
         self.stoping = True
