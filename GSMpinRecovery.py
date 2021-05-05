@@ -14,7 +14,7 @@ import os
 from smartcard.System import readers
 
 class Attack():
-  def __init__(self, connection, startpin, digits, wait, reset, rcpt=None, sender=None, verbose=False):
+  def __init__(self, connection, startpin, digits, wait, reset=None, rcpt=None, sender=None, verbose=False):
     self.wait = wait
     self.reset = reset
     self.startpin = startpin
@@ -142,10 +142,10 @@ class Attack():
       if self.wait != None: 
         time.sleep(self.wait)
 
-      if self.reset: # reset the chip
-        self.ResetChip()
-
       n += 1
+
+      if self.reset != None and reset > 0 and n % self.reset == 0: # reset the chip
+        self.ResetChip()
       
       if n % 10000 == 0:
         self.save()
@@ -159,7 +159,7 @@ if __name__ == "__main__":
   parser.add_argument("--startpin", help="Pin to be cracked.")
   parser.add_argument("--lenght", help="Lenght of the Pin to be cracked.", default=4)
   parser.add_argument("--wait", help="Wait in seconds")
-  parser.add_argument("--reset", help="Reset the chip after try")
+  parser.add_argument("--reset", help="Reset the chip after n tries")
   parser.add_argument("--rcpt", help="Recipient of email")
   parser.add_argument("--sender", help="Sender of the email")
 
@@ -186,7 +186,7 @@ if __name__ == "__main__":
   else:
     l = 4
 
-  attack = Attack(connection, n, l, args.wait, args.reset, rcpt=args.rcpt, sender=args.sender)
+  attack = Attack(connection, n, l, args.wait, reset=args.reset, rcpt=args.rcpt, sender=args.sender)
   signal.signal(signal.SIGINT, attack.signal_handler)
   attack.crack_pin()
   print("[-] Program end.")
