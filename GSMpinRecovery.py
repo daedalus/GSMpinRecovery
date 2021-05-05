@@ -140,7 +140,7 @@ class Attack():
           self.sendmail(b,self.rcpt,'Check this!!!',self.sender)
 
       if self.wait != None: 
-        time.sleep(waittime)
+        time.sleep(self.wait)
 
       if self.reset: # reset the chip
         self.ResetChip()
