@@ -1,6 +1,9 @@
 # GSMpinRecovery
 GSM pin recovery
 
+WARNING: This tool may block your GSM SIM card and if you dont have your PUK anotated you will not be able to unblock it.
+
+
 ```
 usage: GSMpinRecovery.py [-h] [--startpin STARTPIN] [--lenght LENGHT] [--wait WAIT] [--reset RESET] [--rcpt RCPT] [--sender SENDER]
 
