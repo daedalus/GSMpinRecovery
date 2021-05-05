@@ -14,7 +14,7 @@ import os
 from smartcard.System import readers
 
 class Attack():
-  def __init__(self, connection, startpin, digits, wait, reset, rcpt=None, sender=None):
+  def __init__(self, connection, startpin, digits, wait, reset, rcpt=None, sender=None, verbose=False):
     self.wait = wait
     self.reset = reset
     self.startpin = startpin
@@ -27,7 +27,8 @@ class Attack():
     self.rcpt = rcpt
     self.sender = sender
     self.fp = None
-    
+    self.verbose = verbose
+
   def save(self):
     n = self.nc
     if self.fp == None:
@@ -113,7 +114,10 @@ class Attack():
         scommand = str(list(map(hex,COMM)))
 
         if not self.stoping:
-          sys.stderr.write("Pin: %d, Command: %s, Status: %02x %02x\r" % (n,scommand, sw1, sw2))
+          if self.verbose:
+            sys.stderr.write("Pin: %d, Command: %s, Status: %02x %02x\r" % (n,scommand, sw1, sw2))
+          else:
+            sys.stderr.write("Pin: %d\r" % n)
         self.Continue = (sw1 == 0x98 and sw2 == 0x08) # if invalid pin then c=True
         self.Found = not self.Continue
 
