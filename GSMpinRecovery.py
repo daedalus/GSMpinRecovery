@@ -231,6 +231,8 @@ if __name__ == "__main__":
     parser.add_argument("--reset", help="Reset the chip after n tries")
     parser.add_argument("--rcpt", help="Recipient of email")
     parser.add_argument("--sender", help="Sender of the email")
+    parser.add_argument("--verbose", help="Verbose output", action="store_true")
+
 
     args = parser.parse_args()
 
@@ -280,6 +282,7 @@ if __name__ == "__main__":
         reset=args.reset,
         rcpt=args.rcpt,
         sender=args.sender,
+        verbose=args.verbose
     )
     signal.signal(signal.SIGINT, attack.signal_handler)
     attack.crack_pin()
