@@ -5,7 +5,7 @@ __WARNING__: _This tool may block your GSM SIM card and if you dont have your PU
 
 
 ```
-usage: GSMpinRecovery.py [-h] [--startpin STARTPIN] [--lenght LENGHT] [--wait WAIT] [--reset RESET] [--rcpt RCPT] [--sender SENDER]
+usage: GSMpinRecovery.py [-h] [--startpin STARTPIN] [--lenght LENGHT] [--wait WAIT] [--reset RESET] [--rcpt RCPT] [--sender SENDER] [--verbose]
 
 GSM Pin recovery tool
 
@@ -17,6 +17,7 @@ optional arguments:
   --reset RESET        Reset the chip after n tries
   --rcpt RCPT          Recipient of email
   --sender SENDER      Sender of the email
+  --verbose            Verbose output
 ```
 
 Conect your card reader and insert a gsm sim card then fire it:
