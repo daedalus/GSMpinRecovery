@@ -44,7 +44,7 @@ class Attack:
 
     def save(self):
         n = self.nc
-        if self.fp == None:
+        if self.fp is None:
             self.fp = open(".GSMpinRecovery.save", "w")
             self.fp.write("%d\n" % self.nc)
             self.fp.close()
@@ -52,13 +52,7 @@ class Attack:
 
     def sendmail(self, body, recipient, subject, sender):
         b64 = base64.b64encode(body.encode("ascii")).decode("ascii")
-        cmd = "echo %s | base64 -d | gpg -ea -r '%s' | mail %s -s '%s' -r '%s'" % (
-            b64,
-            recipient,
-            recipient,
-            subject,
-            sender,
-        )
+        cmd = f"echo {b64} | base64 -d | gpg -ea -r '{recipient}' | mail {recipient} -s '{subject}' -r '{sender}'"
         if self.verbose:
             print(cmd)
         os.system(cmd)
@@ -68,8 +62,11 @@ class Attack:
         nd = self.nc - self.ns
         ndtd = nd / td
         htd = humanfriendly.format_timespan(td)
-        r = "[+] Runtime: %s, tried pins: %d, rate: %.4f pin/s.   " % (htd, nd, ndtd)
-        return r
+        return "[+] Runtime: %s, tried pins: %d, rate: %.4f pin/s.   " % (
+            htd,
+            nd,
+            ndtd,
+        )
 
     def signal_handler(self, sig, frame):
         self.stoping = True
@@ -123,21 +120,11 @@ class Attack:
         B = 0x30 + int(N[1])
         C = 0x30 + int(N[2])
         D = 0x30 + int(N[3])
-        E = 0xFF
-        F = 0xFF
-        G = 0xFF
-        H = 0xFF
-
-        if l > 4:
-            E = 0x30 + int(N[4])
-        if l > 5:
-            F = 0x30 + int(N[5])
-        if l > 6:
-            G = 0x30 + int(N[6])
-        if l > 7:
-            H = 0x30 + int(N[7])
-
-        COMM = [
+        E = 0x30 + int(N[4]) if l > 4 else 0xFF
+        F = 0x30 + int(N[5]) if l > 5 else 0xFF
+        G = 0x30 + int(N[6]) if l > 6 else 0xFF
+        H = 0x30 + int(N[7]) if l > 7 else 0xFF
+        return [
             0xA0,
             0x20,
             0x00,
@@ -151,9 +138,7 @@ class Attack:
             F,
             G,
             H,
-        ]  # APDU with command pkt
-
-        return COMM
+        ]
 
     def crack_pin(self):
         """The function just forms a APDU with the pin then sends it to the reader and waits for the status."""
@@ -250,7 +235,7 @@ if __name__ == "__main__":
         if cardservice:
             connection = r[0].createConnection()
             connection.connect()
-            print("[+] Card ATR is: [ %s ]" % toHexString(connection.getATR()))
+            print(f"[+] Card ATR is: [ {toHexString(connection.getATR())} ]")
         return connection
 
     connection = getConnection()
