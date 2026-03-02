@@ -195,7 +195,7 @@ class Attack:
             n += 1
 
             if (
-                self.reset != None and reset > 0 and n % self.reset == 0
+                self.reset is not None and self.reset > 0 and n % self.reset == 0
             ):  # reset the chip
                 self.ResetChip()
 
