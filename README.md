@@ -3,6 +3,8 @@ GSM pin recovery
 
 __WARNING__: _This tool may block your GSM SIM card and if you dont have your PUK annotated you will not be able to unblock it._
 
+On older SIM cards it may work but newer SIM cards will block after 3 attempts, always have a backup plan.
+
 
 ```
 usage: GSMpinRecovery.py [-h] [--startpin STARTPIN] [--lenght LENGHT] [--wait WAIT] [--reset RESET] [--rcpt RCPT] [--sender SENDER] [--verbose]
